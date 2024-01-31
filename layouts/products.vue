@@ -7,7 +7,10 @@
           <li><NuxtLink to="/">Home</NuxtLink></li>
           <li><NuxtLink to="/about">About</NuxtLink></li>
           <li><NuxtLink to="/products" class="btn">Products</NuxtLink></li>
-          <li><NuxtLink to="/cart">Cart ({{ count }})</NuxtLink></li>
+          <li><NuxtLink to="/cart">
+            <i class="material-icons material-symbols-outlined">shopping_cart_checkout</i> 
+             {{ count }}
+            </NuxtLink></li>
         </ul>
       </nav>
     </header>
@@ -24,7 +27,10 @@
           <li><NuxtLink to="/">Home</NuxtLink></li>
           <li><NuxtLink to="/about">About</NuxtLink></li>
           <li><NuxtLink to="/products">Products</NuxtLink></li>
-          <li><NuxtLink to="/cart">Cart ({{ count }})</NuxtLink></li>
+          <li><NuxtLink to="/cart">
+            <i class="material-icons material-symbols-outlined">shopping_cart_checkout</i> 
+             ({{ count }})
+            </NuxtLink></li>
         </ul>      
     </footer>
   </div>
@@ -33,7 +39,7 @@
   import { computed } from 'vue'
   import { useCartStore } from '../store/cart'
   const cartStore = useCartStore()
-  const count = computed(() => cartStore.count)
+  const count = computed(() => cartStore.productsTotal)
   </script>
 <style>
   .router-link-exact-active {

@@ -10,38 +10,45 @@
         <h3 class="font-bold border-b-2 mb-4 pb-2">Product description</h3>
         <p class="mb-7">{{ product.description }}</p>
         <button class="btn flex"
-          @click="() => {addToCart(product)}"
+        @click="$emit('add', product.id)"
+          
           >
+          <!-- @click="cartStore.addToCart(product.id)" -->
           <i class="material-icons mr-2">add_shopping_cart</i> 
-          <span>{{ alreadyInCart(product) ? 'In Cart' : 'Add to cart' }}</span>
+          <!-- <span>{{ alreadyInCart(product) ? 'In Cart' : 'Add to cart' }}</span> -->
         </button>
+        
       </div>
     </div>  
   </div>
 </template>
 
 <script setup>
-  const { product } = defineProps(['product'])
-  import { useCartStore } from '../store/cart'
+const props = defineProps({
+  product: { required: true }
+});
+  //const { product } = defineProps(['product'])
 
-  const cartStore = useCartStore()
+  // import { useCartStore } from '../store/cart'
 
-  const alreadyInCart = (product) => {
-    const x = cartStore.cart?.find(el => el.id === product.id)
-    if (x?.id){
-      return true
-    } else {
-      return false
-    }
-  }
+  // const cartStore = useCartStore()
 
-  const addToCart = (product) => {
-    if (!alreadyInCart(product)){
-      cartStore.addToCart(product)
-    } else {
-      alert(`${product.title} already in cart`)
-    }
-  }
+  // const alreadyInCart = (product) => {
+  //   const x = cartStore.cart?.find(el => el.id === product.id)
+  //   if (x?.id){
+  //     return true
+  //   } else {
+  //     return false
+  //   }
+  // }
+
+  // const addToCart = (product) => {
+  //   if (!alreadyInCart(product)){
+  //     cartStore.addToCart(product)
+  //   } else {
+  //     alert(`${product.title} already in cart`)
+  //   }
+  // }
 </script>
 
 <style scoped>

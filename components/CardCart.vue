@@ -11,7 +11,7 @@
       <h2 class="font-semibold mb-4">
         <router-link 
           class="link link-hover" 
-          :to="`/product/${cartProduct.id}`">
+          :to="`/products/${cartProduct.id}`">
           {{ cartProduct.title }}
         </router-link>
       </h2>
@@ -20,7 +20,21 @@
         <div class="btn-group">
           <button 
             class="bg-red-300 hover:op70 px-4 py-2 rounded-xl mt-4"
-            @click="cartStore.remove(cartProduct.id)">Delete</button>
+            @click="cartStore.removeProduct(cartProduct.id)
+          ">Delete</button>
+          <div class="flex">
+            <button class="btn flex"
+            @click="$emit('add', cartProduct.id)"
+            >
+            <i class="material-icons mr-2">add</i> 
+            </button>
+            <span class="font-semibold m-4">{{ cartProduct.quantity }}</span>
+            <button class="btn flex"
+              @click="$emit('remove', cartProduct.id)"
+              >
+              <i class="material-icons mr-2">remove</i> 
+            </button>
+          </div>
         </div>
       </div>
     </div>

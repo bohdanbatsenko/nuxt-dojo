@@ -4,12 +4,19 @@
       <Title>Nuxt Dojo | {{  product.title }}</Title>
       <Meta name="description" :content="product.description"/>
     </Head>
-    <ProductDetails :product="product"/>
+    <ProductDetails :product="product" @add="cartStore.addToCart(product.id)"/>
   </div>
 </template>
 
 <script setup>
-import ProductDetails from '../../components/ProductDetails.vue';
+  //import { storeToRefs } from 'pinia';
+  import { useCartStore } from '../store/cart'
+  //import { useProductStore } from '../../store/products'
+  import ProductDetails from '../../components/ProductDetails.vue';
+  
+  const cartStore = useCartStore()
+  //const productStore = useProductStore()
+  //const { products } = storeToRefs(productStore)
 
   const { id } = useRoute().params
   const uri = 'https://fakestoreapi.com/products/' + id

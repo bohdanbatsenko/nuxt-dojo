@@ -5,16 +5,16 @@ export const useProductStore = defineStore('products', {
   state: () => {
     return {
       products: {},
-      ids: [],
+      //ids: [],
     };
   },
   getters: {
-    list(){
-      return this.ids.map(i => this.products[i])
-    },
-    loaded(){
-      return this.ids.length > 0
-    }
+    // list(){
+    //   return this.ids.map(i => this.products[i])
+    // },
+    // loaded(){
+    //   return this.ids.length > 0
+    // }
   },
   actions: {
     async loadProducts() {
