@@ -1,7 +1,7 @@
 <template>
   <div>
     <div class="grid grid-cols-4 gap-5">
-      <div v-for="p in products">
+      <div v-for="p in products" class="product-card">
         <ProductCard :product="p"/>
       </div>
     </div>
@@ -9,13 +9,22 @@
 </template>
 
 <script setup>
-import ProductCard from '../../components/ProductCard.vue';
+  import { storeToRefs } from 'pinia';
+  import { useProductStore } from '../../store/products'
+  import ProductCard from '../../components/ProductCard.vue';
+  //import ProductCard from '../../components/ProductCard.vue';
+  
+  const productStore = useProductStore()
 
   definePageMeta({
     layout: 'products'
   })
 
-  const { data: products } = await useFetch('https://fakestoreapi.com/products')
+  productStore.loadProducts()
+  const { products } = storeToRefs(productStore)
+
+ 
+  //const { data: products } = await useFetch('https://fakestoreapi.com/products')
 
   useHead({
     title: 'Nuxt Dojo | Merch',
@@ -24,7 +33,4 @@ import ProductCard from '../../components/ProductCard.vue';
     ]
   })
 </script>
-
-<style scoped>
-
-</style>
+<style scoped></style>

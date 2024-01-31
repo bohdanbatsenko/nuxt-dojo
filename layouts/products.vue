@@ -1,10 +1,21 @@
 <template>
   <div>
     <header class="shadow-sm bg-white">
+      <nav class="container mx-auto p-4 flex justify-between">
+        <NuxtLink to="/" class="font-bold">Nuxt Dojo</NuxtLink>
+        <ul class="flex gap-4">
+          <li><NuxtLink to="/">Home</NuxtLink></li>
+          <li><NuxtLink to="/about">About</NuxtLink></li>
+          <li><NuxtLink to="/products" class="btn">Products</NuxtLink></li>
+          <li><NuxtLink to="/cart">Cart ({{ count }})</NuxtLink></li>
+        </ul>
+      </nav>
+    </header>
+    <!-- <header class="shadow-sm bg-white">
       <nav class="container mx-auto p-4">
         <NuxtLink to="/products" class="font-bold">Nuxt Dojo Merch</NuxtLink>
       </nav>
-    </header>
+    </header> -->
     <div class="container mx-auto p-4">
       <slot />
     </div>
@@ -12,12 +23,23 @@
       <ul class="flex gap-4">
           <li><NuxtLink to="/">Home</NuxtLink></li>
           <li><NuxtLink to="/about">About</NuxtLink></li>
-          <li><NuxtLink to="products/">Products</NuxtLink></li>
+          <li><NuxtLink to="/products">Products</NuxtLink></li>
+          <li><NuxtLink to="/cart">Cart ({{ count }})</NuxtLink></li>
         </ul>      
     </footer>
   </div>
 </template>
+<script setup>
+  import { computed } from 'vue'
+  import { useCartStore } from '../store/cart'
+  const cartStore = useCartStore()
+  const count = computed(() => cartStore.count)
+  </script>
 <style>
   .router-link-exact-active {
     color: #12b488;
-  }</style>
+  }
+  .router-link-active.router-link-exact-active.btn {
+    color: #fff;
+  }
+  </style>
