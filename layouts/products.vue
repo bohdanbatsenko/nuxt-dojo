@@ -40,7 +40,7 @@
   import { useCartStore } from '../store/cart'
   const cartStore = useCartStore()
   const count = computed(() => cartStore.productsTotal)
-  </script>
+</script>
 <style>
   .router-link-exact-active {
     color: #12b488;
