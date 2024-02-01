@@ -27,7 +27,7 @@ export const useCartStore = defineStore('cart', {
       //   minimumFractionDigits: 2,
       // });
       //return formatter.format(totalPrice);
-      return Number(totalPrice).toFixed(2)
+      return formatPrice(totalPrice)
       //return Number.parseFloat(totalPrice).toFixed(2);
     },
     productsTotal() {
