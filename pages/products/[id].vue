@@ -4,7 +4,9 @@
       <Title>Nuxt Dojo | {{  product.title }}</Title>
       <Meta name="description" :content="product.description"/>
     </Head>
-    <ProductDetails :product="product" @add="cartStore.addToCart(product.id)"/>
+    <!-- <ProductDetails :product="product" @add="cartStore.addToCart(product.id)"/> -->
+    <ProductDetails :product="product"  @add="cartStore.addToCart(product.id)"/>
+
   </div>
 </template>
 

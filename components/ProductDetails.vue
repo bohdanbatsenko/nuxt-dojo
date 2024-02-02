@@ -11,11 +11,10 @@
         <p class="mb-7">{{ product.description }}</p>
         <button class="btn flex"
         @click="$emit('add', product.id)"
-          
-          >
+        >
           <!-- @click="cartStore.addToCart(product.id)" -->
           <i class="material-icons mr-2">add_shopping_cart</i> 
-          <!-- <span>{{ alreadyInCart(product) ? 'In Cart' : 'Add to cart' }}</span> -->
+          <!-- <span>{{ !isProductInCart ? 'In Cart' : 'Add to cart' }}</span> -->
         </button>
         
       </div>
@@ -27,26 +26,37 @@
 const props = defineProps({
   product: { required: true }
 });
-  //const { product } = defineProps(['product'])
+//const { product } = defineProps(['product'])
 
-  // import { useCartStore } from '../store/cart'
+// import { storeToRefs } from 'pinia'
+// import { useCartStore } from '../store/cart'
 
-  // const cartStore = useCartStore()
+//   const cartStore = useCartStore()
+//   const { cart, isProductInCart } = storeToRefs(cartStore)
 
-  // const alreadyInCart = (product) => {
-  //   const x = cartStore.cart?.find(el => el.id === product.id)
-  //   if (x?.id){
-  //     return true
+  //const productInCart = computed(async () => await isProductInCart(props.product.id) !== undefined);
+
+  //const alreadyInCart = (productId) => {
+    //return cart.some(item => item.productId === productId);
+    //const cart = useCartStore().cart; 
+    //console.log(Object.keys(cart))
+    //const prodInCart = Object.values(cart.value).some(([id]) => id === productId);
+    //return  Object.values(cart.value).includes(productId);
+    //console.log(prodInCart)
+    // const x = cart.find(el => el.id === product.id)
+    // if (x){
+    //   return true
+    // } else {
+    //   return false
+    // }
+  //}
+
+  // const add = (id) => {
+  //   console.log(`Product added ${id}`);
+  //   if (isProductInCart){
+  //     cartStore.addToCart(id)
   //   } else {
-  //     return false
-  //   }
-  // }
-
-  // const addToCart = (product) => {
-  //   if (!alreadyInCart(product)){
-  //     cartStore.addToCart(product)
-  //   } else {
-  //     alert(`${product.title} already in cart`)
+  //     alert(`${id} already in cart`)
   //   }
   // }
 </script>

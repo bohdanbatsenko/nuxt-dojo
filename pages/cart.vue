@@ -21,11 +21,21 @@
             <p class="md:text-4xl mb-4">{{ cartStore.productsTotal }}</p> 
         </div>
         </div>
-
       </div>
-      <div class=""></div>
+      
+      <div v-if="cartStore.formattedCart.length">
+      <h2 class="cart-page-carousel-title">You might aslo like</h2>
+      <carousel :items-to-show="5" class="cart-page-carousel">  
+        <slide v-for="slide in products" :key="slide" class="carousel__item">
+          <ProductCard :product="slide" />
+        </slide>
 
-
+        <template #addons>
+          <navigation />
+          <pagination />
+        </template>
+      </carousel>
+      </div>
   </div>
 </template>
 
@@ -34,15 +44,23 @@
   definePageMeta({
     layout: 'products'
   })
+  import { storeToRefs } from 'pinia';
   import { useCartStore } from '../store/cart'
-  //import { useProductStore } from '../store/products'
+  import { useProductStore } from '../store/products'
   import CardCart from '../../components/CardCart.vue';
   
   const cartStore = useCartStore()
-  //const productStore = useProductStore()
+  const productStore = useProductStore()
+  const { products } = storeToRefs(productStore)
   //const formattedCart = computed(() => cartStore.formattedCart)
 </script>
 
 <style scoped>
-
+.cart-page-carousel-title {
+  font-size: 32px;
+  margin: 44px 0 34px;
+}
+.cart-page-carousel.carousel__item .card {
+  max-width: 200px;
+}
 </style>
