@@ -17,7 +17,9 @@
     "vue-router": "^4.2.5"
   },
   "dependencies": {
+    "@hebilicious/vue-query-nuxt": "^0.3.0",
     "@pinia/nuxt": "^0.5.1",
+    "@tanstack/vue-query": "^5.18.1",
     "pinia": "^2.1.7",
     "vue3-carousel-nuxt": "^1.1.0"
   }

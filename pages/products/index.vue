@@ -7,40 +7,119 @@
         <h2 class="slide-title">{{ slide.title }}</h2>
         <h3 class="slide-descr">{{ slide.descr }}</h3>
       </div>
-
     </slide>
-
     <template #addons>
       <navigation />
       <pagination />
     </template>
   </carousel>
-    <div class="grid grid-cols-4 gap-5">
-      <div v-for="p in products" class="product-card">
-        <ProductCard :product="p"/>
+  <div class="container p-2 mx-auto">
+    <div class="flex flex-row flex-wrap py-4">
+      
+      <!-- <Filters
+      inputType="checkbox"
+      :categoriesData="categories" 
+      v-model="checkedCategories" 
+      @change="filterCategory"
+      @handleAll="clickedAll"
+      /> -->
+      <div class="w-full sm:w-1/4 md:w-1/4 lg:w-1/6 px-2">
+        <Sorting v-model="sortBy" @reset-sort="handleReset"/>
+        <!-- <Sorting v-model="sortBy" @change="sortByTitle"/> -->
+       
+      <Filters
+        inputType="radio"
+        v-model="checkedCategories"
+        @change="filterCategory"
+        
+      />  
       </div>
+   
+      <main role="main" class="w-full sm:w-2/3 md:w-3/4 pt-1 px-2">
+        <div class="grid grid-cols-4 gap-5">
+          <div v-for="(p, index) in sortedProducts" class="product-card">
+            <ProductCard :product="p" :key="index"/>
+         </div>
+        </div>
+      </main>
     </div>
+  </div>
   </div>
 </template>
 
 <script setup>
   import 'vue3-carousel/dist/carousel.css'
-  import { ref } from 'vue'
+  import { ref, computed } from 'vue'
   import { storeToRefs } from 'pinia';
   import { useProductStore } from '../../store/products'
   import ProductCard from '../../components/ProductCard.vue';
-  //import ProductCard from '../../components/ProductCard.vue';
   const productStore = useProductStore()
 
   definePageMeta({
     layout: 'products'
   })
-
   productStore.loadProducts()
+//   const filteredProducts = computed(() => {
+//    return state.categoryId === 'all' 
+//      ? products
+//      : products.filter((product) => product.productCategoryID === categoryId);
+// })
   const { products } = storeToRefs(productStore)
+  const checkedCategories = ref();
+  
+  const filterCategory = () => {
+    if (checkedCategories.value === 'all'){
+      productStore.loadProducts()
+    } else {
+      productStore.loadProductsByCategory(checkedCategories.value)
+    }
+  }
+  //const clickedAll = () => { productStore.loadProducts()}
+  //const filteredProducts = ref([])
 
- 
+  //const catProducts = ref([])
+  // watch(checkedCategories, async () => {
+  //   const { data: catProducts } = await useFetch(`https://fakestoreapi.com/products/category/jewelery?limit=3`)
+  // });
   //const { data: products } = await useFetch('https://fakestoreapi.com/products')
+
+  const sortBy = ref('reset')
+  // Sort using action store
+  // const sortByTitle = () => {
+  //   if (sortBy.value === 'title') {
+  //     productStore.sortByTitle()
+  //   } 
+  //   if (sortBy.value === 'price') {
+  //     productStore.sortByPrice
+  //   }
+  // }
+  //const sortedByPrice = ref(productStore.sortByPrice)
+  //const sortedByPrice = computed(()=> products = productStore.sortByPrice)
+  const sortedProducts = computed(() => {
+    return Object.values(products.value).sort((a, b) => {
+      if (sortBy.value === 'reset') { return }
+      if (sortBy.value === 'title') {
+        console.log('Choose by title')
+        // Crashes - don't use
+        //productStore.sortByTitle()
+        if (a.title < b.title) {
+          return -1;
+        }
+        if (a.title > b.title) {
+          return 1;
+        }
+        return 0;
+      }
+      if (sortBy.value === 'price') {
+        //productStore.sortByPrice
+        return a.price - b.price;
+      }
+    });
+  })
+
+  const handleReset = () => {
+    console.log('Reset clicked')
+  }
 
   useHead({
     title: 'Nuxt Dojo | Merch',
@@ -48,7 +127,7 @@
       { name: 'description', content: 'Nuxt 3 Merch' }
     ]
   })
-
+ 
   const getRandomInt = (min, max) => {
     return Math.floor(Math.random() * (max - min + 1)) + min;
   };

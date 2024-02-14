@@ -24,7 +24,7 @@
       </div>
       
       <div v-if="cartStore.formattedCart.length">
-      <h2 class="cart-page-carousel-title">You might aslo like</h2>
+      <h2 class="cart-page-carousel-title">You may aslo like</h2>
       <carousel :items-to-show="5" class="cart-page-carousel">  
         <slide v-for="slide in products" :key="slide" class="carousel__item">
           <ProductCard :product="slide" />

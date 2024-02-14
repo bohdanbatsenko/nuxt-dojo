@@ -1,46 +1,44 @@
 <template>
   <div class="card text-center">
+
     <div class="thumb-wrapper">
       <img :src="product.image" alt="product thumb" class="thumb">
     </div>
     <p class="product-title font-bold text-gray-500 m-4 truncate">{{ product.title }}</p>
     <p class="font-bold text-gray-500 m-4 truncate">{{ product.price }}</p>
+    <p class="font-regular text-gray-500 m-2 truncate">Cat:{{ product.category }}</p>
     <div class="card-actions flex items-center justify-around">
       <NuxtLink :to="`/products/${product.id}`">
         <p class="btn my-4 w-15">View details</p>
       </NuxtLink>
       <button 
         class="btn flex h-9"
-        @click="cartStore.addToCart(product.id)
+        @click="add(product.id)
         ">
+        <span>{{ productIsInCart ? 'In cart' : 'Add to cart' }}</span>
         <!-- {{ alreadyInCart(product) ? 'In Cart' : 'Add to cart' }} -->
         <i class="material-icons mr-2">add_shopping_cart</i>
       </button>
     </div>
+
   </div>
 </template>
 
 <script setup>
+import { computed } from 'vue'
   import { useCartStore } from '../store/cart'
-  const { product } = defineProps(['product'])
+  //const { product } = defineProps(['product'])
+  const props = defineProps(['product'])
   const cartStore = useCartStore()
 
-  // const alreadyInCart = (product) => {
-  //   const x = cartStore.cart.find(el => el.id === product.id)
-  //   if (x.id){
-  //     return true
-  //   } else {
-  //     return false
-  //   }
-  // }
-
-  // const addToCart = (product) => {
-  //   if (!alreadyInCart(product)){
-  //     cartStore.addToCart(product)
-  //   } else {
-  //     alert(`${product.title} already in cart`)
-  //   }
-  // }
+  const productIsInCart = computed(() => cartStore.isProductInCart(props.product.id))
+  const add = (productId) => {
+    if (!productIsInCart.value) {
+      cartStore.addToCart(productId)
+    } else {
+      alert(`${props.product.title} already in cart!`)
+    }
+  }
 </script>
 
 <style scoped>

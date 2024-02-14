@@ -11,10 +11,13 @@ export const useCartStore = defineStore('cart', {
         return acc + this.cart[id].quantity
       }, 0)
     },
-    isProductInCart: (state) => {
-      //return Object.keys(this.cart).includes(productId);
-      return (productId) => Object.keys(state.cart).includes(productId)
+    isProductInCart: (state) => (productId) => {
+      return !!state.cart[productId];
     },
+    // isProductInCart: (state) => {
+    //   //return Object.keys(state.cart).includes(productId);
+    //   return (productId) => Object.keys(state.cart).includes(productId)
+    // },
     total(){
       const productsStore = useProductStore()
       // return Object.keys(this.cart).reduce((acc, id) => {
