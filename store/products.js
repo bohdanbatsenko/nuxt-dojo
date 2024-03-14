@@ -1,5 +1,5 @@
 import { defineStore } from "pinia";
-import { apiLoadProducts, apiLoadProductsByCategory, sortProductsByTitle } from '../server/api/products'
+import { apiLoadProducts, apiLoadProductsByCategory } from '../server/api/products'
 
 export const useProductStore = defineStore('products', {
   state: () => {
@@ -55,7 +55,7 @@ export const useProductStore = defineStore('products', {
       }
     },
     async loadProductsByCategory(category) {
-      if (this.loaded) return
+      // if (this.loaded) return
       try {
         this.loading = true
         this.products = await apiLoadProductsByCategory(category)

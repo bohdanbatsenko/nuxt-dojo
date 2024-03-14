@@ -1,6 +1,7 @@
 <template>
   <div>
-    <carousel class="products-page-carousel">
+    <ClientOnly>
+      <carousel class="products-page-carousel">
     <slide v-for="slide in slides" :key="slide" class="carousel__item">
       <img :src="slide.image">
       <div class="slide-content">
@@ -13,6 +14,7 @@
       <pagination />
     </template>
   </carousel>
+</ClientOnly>
   <div class="container p-2 mx-auto">
     <div class="flex flex-row flex-wrap py-4">
       
@@ -23,7 +25,7 @@
       @change="filterCategory"
       @handleAll="clickedAll"
       /> -->
-      <div class="w-full sm:w-1/4 md:w-1/4 lg:w-1/6 px-2">
+      <aside class="w-full sm:w-1/4 md:w-1/4 lg:w-1/6 px-2">
         <Sorting v-model="sortBy" @reset-sort="handleReset"/>
         <!-- <Sorting v-model="sortBy" @change="sortByTitle"/> -->
        
@@ -33,13 +35,26 @@
         @change="filterCategory"
         
       />  
-      </div>
+      </aside>
    
       <main role="main" class="w-full sm:w-2/3 md:w-3/4 pt-1 px-2">
+        <div class="flex flex-row w-full categories-wrapper">
+          <ul class="categories-list">
+            <p>{{ $route.params.products }}</p>
+            <li v-for="category in categories" class="rounded-md border border-black">
+              <NuxtLink :to="`products/category/${category}`">
+                <h3>{{ category }}</h3>
+                <button class="btn my-4 w-28">View</button>
+              </NuxtLink>
+            </li>
+          </ul>
+        </div>
         <div class="grid grid-cols-4 gap-5">
-          <div v-for="(p, index) in sortedProducts" class="product-card">
-            <ProductCard :product="p" :key="index"/>
+
+          <div v-if="sortedProducts" v-for="(p, index) in sortedProducts" class="product-card">
+             <ProductCard :product="p" :key="index"/>
          </div>
+
         </div>
       </main>
     </div>
@@ -54,11 +69,14 @@
   import { useProductStore } from '../../store/products'
   import ProductCard from '../../components/ProductCard.vue';
   const productStore = useProductStore()
+  const { data: categories } = await useFetch('/api/categories')
 
   definePageMeta({
     layout: 'products'
   })
+
   productStore.loadProducts()
+
 //   const filteredProducts = computed(() => {
 //    return state.categoryId === 'all' 
 //      ? products
@@ -83,21 +101,12 @@
   // });
   //const { data: products } = await useFetch('https://fakestoreapi.com/products')
 
-  const sortBy = ref('reset')
-  // Sort using action store
-  // const sortByTitle = () => {
-  //   if (sortBy.value === 'title') {
-  //     productStore.sortByTitle()
-  //   } 
-  //   if (sortBy.value === 'price') {
-  //     productStore.sortByPrice
-  //   }
-  // }
-  //const sortedByPrice = ref(productStore.sortByPrice)
-  //const sortedByPrice = computed(()=> products = productStore.sortByPrice)
+  const sortBy = ref()
+
   const sortedProducts = computed(() => {
     return Object.values(products.value).sort((a, b) => {
-      if (sortBy.value === 'reset') { return }
+      // if (sortBy.value === '') { 
+      //  }
       if (sortBy.value === 'title') {
         console.log('Choose by title')
         // Crashes - don't use
@@ -109,8 +118,7 @@
           return 1;
         }
         return 0;
-      }
-      if (sortBy.value === 'price') {
+      } else if (sortBy.value === 'price') {
         //productStore.sortByPrice
         return a.price - b.price;
       }
@@ -118,7 +126,9 @@
   })
 
   const handleReset = () => {
-    console.log('Reset clicked')
+    console.log('Products reset 2')
+    sortBy.value = ''
+    //productStore.loadProducts()
   }
 
   useHead({
@@ -175,5 +185,20 @@
   font-size: 44px;
   color: #fff;
 }
-
+.categories-wrapper {
+  width:100%;
+  max-height:100px;
+}
+.categories-list {
+  display: flex;
+  width: 100%;
+}
+.categories-list li {
+  flex: 25%;
+  padding: 14px;
+  text-align: center;
+}
+.categories-list li a {
+  text-align: center;
+}
 </style>

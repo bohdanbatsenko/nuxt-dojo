@@ -31,6 +31,16 @@
   definePageMeta({
     layout: 'products'
   })
+  useSeoMeta({
+  title: product.title,
+  description: product.description,
+  ogTitle: product.title,
+  ogDescription: product.description,
+  ogImage: product.thumbnail,
+  twitterTitle: product.title,
+  twitterDescription: product.description,
+  twitterImage: product.thumbnail,
+});
 </script>
 
 <style scoped>

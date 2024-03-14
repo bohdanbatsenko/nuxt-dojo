@@ -5,10 +5,11 @@
       <label for="sorting">Sort by</label>
       <select class="py-4" name="sorting" id="sorting" v-model="sortBy">
       <!-- <select name="sorting" id="sorting" v-model="sortBy" @update:modelValue="sortByTitle"> -->
+        <option value="0" hidden>Sorting</option>
         <option value="price">Price</option>
         <option value="title">Title</option>
       </select>
-      <button class="btn flex h-9 my-4" @click="$emit('reset-sort')"><span>Reset</span></button>
+      <button class="btn flex h-9 my-4" @click="resetSort"><span>Reset</span></button>
       <p>Sorting selected: <pre>{{ sortBy }}</pre></p>
     </div>
   </div>
@@ -19,8 +20,11 @@
   const props = defineProps({
     modelValue: {required: true}
   });
-  const emit = defineEmits(['update:modelValue', 'reset-sort'])
+  const emit = defineEmits(['update:modelValue', 'resetSort'])
   const sortBy = ref()
   watch(sortBy, (newVal) => { emit('update:modelValue', newVal) });
+  const resetSort = () => {
+    emit('resetSort')
+  }
 </script>
 

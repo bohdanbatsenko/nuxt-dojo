@@ -46,23 +46,41 @@ export const useCartStore = defineStore('cart', {
     formattedCart(){
       const productsStore = useProductStore()
       //if (!productsStore.loaded) return []
+      if (!productsStore.products || !productsStore.products.length) {
+        return [];
+      }
       
+      // return Object.keys(this.cart).map((productId) => {
+      //   const product = this.cart[productId]
+
+      //   return {
+      //     id: product.productId,
+      //     image: productsStore.products.find((p) => p.id === product.productId).image,
+      //     title: productsStore.products.find((p) => p.id === product.productId).title,
+      //     price: productsStore.products.find((p) => p.id === product.productId).price,
+      //     quantity: product.quantity,
+      //     cost:
+      //       product.quantity *
+      //       productsStore.products.find((p) => p.id === product.productId).price,
+      //   }
+      // })
       return Object.keys(this.cart).map((productId) => {
-        const product = this.cart[productId]
-        //const  products = productsStore.products
-
-        return {
-          id: product.productId,
-          image: productsStore.products.find((p) => p.id === product.productId).image,
-          title: productsStore.products.find((p) => p.id === product.productId).title,
-          price: productsStore.products.find((p) => p.id === product.productId).price,
-          quantity: product.quantity,
-          cost:
-            product.quantity *
-            productsStore.products.find((p) => p.id === product.productId).price,
+        const product = this.cart[productId];
+        const foundProduct = productsStore.products.find((p) => p.id === product.productId);
+  
+        if (!foundProduct) {
+          return null; // or handle missing product data appropriately
         }
-      })
-
+  
+        return {
+          id: foundProduct.id,
+          image: foundProduct.image,
+          title: foundProduct.title,
+          price: foundProduct.price,
+          quantity: product.quantity,
+          cost: product.quantity * foundProduct.price,
+        };
+      }); 
     }
   },
   actions: {
